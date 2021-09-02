@@ -549,7 +549,11 @@
         <script src="{{ asset('assets/js/sweetalert.min.js') }}"></script>
 
         <!-- VALIDACIONES GLOBALES DEL SISTEMA -->
-
+        @if ($tipo <= 0)
+            <script type="text/javascript">
+                toastr.warning("POR FAVOR CONFIGURE LOS TIPOS DE VEHICULOS.")
+            </script>
+        @endif
 
         <!-- NECESARIO PARA EL FUNCIONAMIENTO DE LIVEWIRE -->
         @livewireScripts

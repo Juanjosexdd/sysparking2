@@ -1,6 +1,6 @@
 <div class="footer-wrapper">
     <div class="footer-section f-section-1">
-        <p class="">Copyright © 2020 <a target="_blank" href="https://luisfax.com">LuisFax.Com</a>, All rights reserved.</p>
+        <p class="">Copyright © 2021 <a target="_blank" href="">Juan Soto</a>, All rights reserved.</p>
     </div>
     <div class="footer-section f-section-2">
         <p class="">Coded with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"

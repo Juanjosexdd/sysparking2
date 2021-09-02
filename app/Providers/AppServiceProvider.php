@@ -23,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        view()->composer('layouts.template', function($view){
+            $tipo = \App\Models\Tipo::count();
+            $view->with(['tipo' => $tipo ]);
+        });
     }
 }
