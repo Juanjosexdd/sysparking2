@@ -2,10 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use App\Cajon;
+use App\Models\Cajon;
 use Livewire\Component;
 use Livewire\WithPagination;
-use App\Tipo;
+use App\Models\Tipo;
 
 class CajonController extends Component
 {
@@ -13,10 +13,11 @@ class CajonController extends Component
 
     use WithPagination;
     protected $paginationTheme = 'bootstrap';
-    public $tipo = 'Elegir', $description, $estatus = 'DISPONIBLE', $tipos; //tipos es para retornar el array
+    public $tipo = 'Elegir', $desccripcion, $estatus = 'DISPONIBLE', $tipos; //tipos es para retornar el array
     // MANIPULAR REGISTROS DE la table
     public $selected_id, $search;
-    public $action = 1, $pagination = 5;
+    //Action para cambiar entre listado y formularios
+    public $action = 1, $pagination = 4;
 
     public function mount()
     {
@@ -34,15 +35,15 @@ class CajonController extends Component
         if (strlen($this->search) > 0) { //el user tecleo-escribio algo en la caja de texto
 
             // cons devolver unir cajon con tipos 
-            $info = Cajon::leftjoin('tipos as t', 't.id', 'cajones.tipo_id')->select('cajones.*', 't.description as tipo') //tipo seria el que usamos en el select en el wire:model
-                ->where('cajones.description', 'like', '%' . $this->search . '%')
-                ->orWhere('cajones.description', 'like', '%' . $this->search . '%')->paginate($this->pagination);
+            $info = Cajon::leftjoin('tipos as t', 't.id', 'cajones.tipo_id')->select('cajones.*', 't.desccripcion as tipo') //tipo seria el que usamos en el select en el wire:model
+                ->where('cajones.desccripcion', 'like', '%' . $this->search . '%')
+                ->orWhere('cajones.estatus', 'like', '%' . $this->search . '%')->paginate($this->pagination);
             $info =  [
                 'info' => $info,
             ];
             return view('livewire.cajones.component', $info);
         } else {
-            $info = Cajon::leftjoin('tipos as t', 't.id', 'cajones.tipo_id')->select('cajones.*', 't.description as tipo')->orderBy('cajones.id', 'desc')->paginate($this->pagination);
+            $info = Cajon::leftjoin('tipos as t', 't.id', 'cajones.tipo_id')->select('cajones.*', 't.desccripcion as tipo')->orderBy('cajones.id', 'desc')->paginate($this->pagination);
             $info =  [
                 'info' => $info,
             ];
@@ -72,7 +73,7 @@ class CajonController extends Component
     // LIMPIAR VARIABLES
     public function resetInput()
     {
-        $this->description = '';
+        $this->desccripcion = '';
         $this->tipo = 'Elegir';
         $this->estatus = 'DISPONIBLE';
         $this->selected_id = null;
@@ -87,7 +88,7 @@ class CajonController extends Component
         $record = Cajon::findOrFail($id);
         $this->selected_id = $id;
         $this->tipo = $record->tipo_id;
-        $this->description = $record->description;
+        $this->desccripcion = $record->desccripcion;
         $this->estatus = $record->estatus;
         $this->action = 2;
     }
@@ -105,7 +106,7 @@ class CajonController extends Component
         $this->validate(
             [
                 'tipo' => 'required',
-                'description' => 'required|min:4',
+                'desccripcion' => 'required|min:4',
                 'estatus' => 'required',
             ]
         );
@@ -114,7 +115,7 @@ class CajonController extends Component
         if ($this->selected_id <= 0) {
             $cajon = Cajon::create(
                 [
-                    'description' => $this->description,
+                    'desccripcion' => $this->desccripcion,
                     'tipo_id' => $this->tipo,
                     'estatus' => $this->estatus
                 ]
@@ -123,7 +124,7 @@ class CajonController extends Component
             $record = Cajon::find($this->selected_id);
             $record->update(
                 [
-                    'description' => $this->description,
+                    'desccripcion' => $this->desccripcion,
                     'tipo_id' => $this->tipo,
                     'estatus' => $this->estatus,
                 ]

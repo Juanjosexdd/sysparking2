@@ -5,6 +5,6 @@
 @endif
 @if (session()->has('msg-error'))
     <script>
-        toastr.success("{{@session('msg-error')}}", "info");
+        toastr.danger("{{@session('msg-error')}}", "info");
     </script>
 @endif
